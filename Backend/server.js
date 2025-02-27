@@ -5,6 +5,7 @@ const morgan = require('morgan'); // For logging HTTP requests
 
 const userRouter = require('./Routes/userRoutes');
 const topicsRouter = require('./Routes/topicsRoutes');
+const viewsRouter = require('./Routes/viewsRoutes');
 
 //Initialize the Express application
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 // 🚦 Route Middlewares - direct requests to relevant route files
 app.use('/users', userRouter);
 app.use('/topics', topicsRouter);
+app.use('/views', viewsRouter);
 
 // 🚀 Start the server and listen for incoming requests
 const PORT = process.env.PORT || 5000;
