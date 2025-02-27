@@ -31,5 +31,20 @@ async function sendWelcomeEmail(recipient, appUserName) {
 		console.error('Error while sending email', error);
 	}
 }
-
-module.exports = { sendWelcomeEmail };
+async function sendTopicCreationEmail(recipient, appUserName, topic) {
+	try {
+		await transporter.sendMail({
+			from: `ChanuaRaiya <${process.env.EMAIL_USER}>`,
+			to: `${recipient}`,
+			subject: `New Discussion Underway`,
+			html: `
+                <h1>Vipi ${appUserName}, Kam Changia Hii!</h1>
+                <p>A new discussion on "${topic}" has been started</p><br/>
+                <p>Tusho Unafeel aje kuhusu hii stori?, <br/>Na Usisahau Ku-ChanuaRaiya</p>
+            `,
+		});
+	} catch (error) {
+		console.error('Error while sending email', error);
+	}
+}
+module.exports = { sendWelcomeEmail, sendTopicCreationEmail };
