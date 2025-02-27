@@ -17,5 +17,7 @@ const createTopicSchema = Joi.object({
 	Title: Joi.string().required(),
 	Context: Joi.string().optional(),
 });
-
-module.exports = { registerUserSchema, loginUserSchema, createTopicSchema };
+const shareViewSchema = Joi.object({
+	Opinion: Joi.string().required(),
+});
+module.exports = { registerUserSchema, loginUserSchema, createTopicSchema, shareViewSchema };
