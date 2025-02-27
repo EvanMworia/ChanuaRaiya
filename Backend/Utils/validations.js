@@ -13,4 +13,9 @@ const loginUserSchema = Joi.object({
 	Password: Joi.string().required(),
 });
 
-module.exports = { registerUserSchema, loginUserSchema };
+const createTopicSchema = Joi.object({
+	Title: Joi.string().required(),
+	Context: Joi.string().optional(),
+});
+
+module.exports = { registerUserSchema, loginUserSchema, createTopicSchema };
