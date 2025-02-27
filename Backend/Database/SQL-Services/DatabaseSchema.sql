@@ -8,11 +8,21 @@ CREATE TABLE Users(
     PasswordHash VARCHAR(255) NOT NULL,
     CreatedAt DATETIME DEFAULT GETDATE()
 )
--- DROP TABLE Users
-
--- INSERT INTO Users(UserId, Username, Email, Role, PasswordHash)
--- VALUES
--- ('user1', 'Admin', 'admin@test.com', 'Admin', '123'),
--- ('user2', 'Citizen', 'citizen@test.com', 'User', '123')
-
--- SELECT * FROM Users
+GO
+USE CHANUARAIYA
+CREATE TABLE Topics(
+    TopicId VARCHAR(255) NOT NULL PRIMARY KEY,
+    Title VARCHAR(350) NOT NULL,
+    Context VARCHAR(2500) NULL,
+    CreatedAt DATETIME DEFAULT GETDATE()
+)
+GO
+CREATE TABLE Views(
+    ViewId VARCHAR(255) NOT NULL PRIMARY KEY,
+    Opinion VARCHAR(1600) NOT NULL,
+    UserId VARCHAR(255) FOREIGN KEY REFERENCES Users(UserId),
+    TopicId VARCHAR(255) NOT NULL FOREIGN KEY REFERENCES Topics(TopicId) ON DELETE CASCADE
+)
+USE CHANUARAIYA
+DROP TABLE Views
+DROP TABLE Topics
