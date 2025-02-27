@@ -4,6 +4,7 @@ const cors = require('cors'); // To allow/disallow cross-origin requests
 const morgan = require('morgan'); // For logging HTTP requests
 
 const userRouter = require('./Routes/userRoutes');
+const topicsRouter = require('./Routes/topicsRoutes');
 
 //Initialize the Express application
 const app = express();
@@ -20,7 +21,8 @@ app.use(express.json());
 // This allows Express to automatically parse JSON payloads in requests.
 
 // 🚦 Route Middlewares - direct requests to relevant route files
-app.use('/users', userRouter); // 🔗 All user-related routes start with /users
+app.use('/users', userRouter);
+app.use('/topics', topicsRouter);
 
 // 🚀 Start the server and listen for incoming requests
 const PORT = process.env.PORT || 5000;
