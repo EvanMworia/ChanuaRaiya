@@ -1,0 +1,7 @@
+USE CHANUARAIYA
+GO
+CREATE OR ALTER PROCEDURE GetIncidentById(@IncidentId VARCHAR(255))
+AS
+BEGIN
+    SELECT * FROM Incidents WHERE IncidentId = @IncidentId
+END

@@ -1,0 +1,8 @@
+USE CHANUARAIYA
+GO
+CREATE OR ALTER PROCEDURE DeleteDocument(@DocumentId VARCHAR(255))
+AS
+BEGIN
+SET NOCOUNT ON;
+    DELETE FROM Documents WHERE DocumentId = @DocumentId
+END
