@@ -6,6 +6,10 @@ const morgan = require('morgan'); // For logging HTTP requests
 const userRouter = require('./Routes/userRoutes');
 const topicsRouter = require('./Routes/topicsRoutes');
 const viewsRouter = require('./Routes/viewsRoutes');
+const pollsRouter = require('./Routes/pollRoutes');
+// const incidentsRouter = require('./Routes/incidentRoutes');
+const updatedIncidentRouter = require('./Routes/updatedIncidentRoutes');
+const documentsRouter = require('./Routes/documentRoutes');
 
 //Initialize the Express application
 const app = express();
@@ -25,6 +29,9 @@ app.use(express.json());
 app.use('/users', userRouter);
 app.use('/topics', topicsRouter);
 app.use('/views', viewsRouter);
+app.use('/polls', pollsRouter);
+app.use('/incidents', updatedIncidentRouter);
+app.use('/documents', documentsRouter);
 
 // 🚀 Start the server and listen for incoming requests
 const PORT = process.env.PORT || 5000;
