@@ -39,9 +39,38 @@ async function getAllPolls(req, res) {
 
 		res.status(200).json(results.recordset);
 	} catch (error) {
-		console.error('❌ Error fetching Topics:', error);
+		console.error('❌ Error fetching Polls:', error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 }
+async function getPollById(req, res) {
+	try {
+		const { id } = req.params;
 
-module.exports = { createNewPoll, getAllPolls };
+		const foundPoll = await db.executeProcedure('GetPollById', { PollId: id });
+		if (!foundPoll) {
+			res.status(404).json({ message: 'No Poll was found with that id' });
+		}
+
+		res.status(200).json(foundPoll.recordset);
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+async function deletePoll(req, res) {
+	try {
+		const { id } = req.params;
+		const foundPoll = await db.executeProcedure('GetPollById', { PollId: id });
+		if (!foundPoll) {
+			res.status(404).json({ message: 'No Discussion Poll was found with that id' });
+		}
+		await db.executeProcedure('DeletePoll', { PollId: id });
+		res.status(200).json({ message: `Poll has been deleted successfully` });
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+
+module.exports = { createNewPoll, getAllPolls, getPollById, deletePoll };
