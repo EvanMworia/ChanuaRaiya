@@ -1,0 +1,8 @@
+USE CHANUARAIYA
+GO
+CREATE OR ALTER PROCEDURE GetPollById
+    @PollId VARCHAR(255)
+AS
+BEGIN
+    SELECT PollId, Question, CreatedAt FROM Polls WHERE PollId = @PollId;
+END;
