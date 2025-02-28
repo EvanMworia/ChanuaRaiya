@@ -36,5 +36,30 @@ async function reportIncident(req, res) {
 		res.status(500).json({ message: `Internal server error: ${error.message}` });
 	}
 }
+async function getAllIncidents(req, res) {
+	try {
+		let results = await db.executeProcedure('GetIncidents', {});
 
-module.exports = { reportIncident };
+		res.status(200).json(results.recordset);
+	} catch (error) {
+		console.error('❌ Error fetching Incidents:', error);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
+}
+
+async function getIncidentById(req, res) {
+	try {
+		const { id } = req.params;
+
+		const foundIncident = await db.executeProcedure('GetIncidentById', { IncidentId: id });
+		if (!foundIncident) {
+			res.status(404).json({ message: 'No Incident was found with that id' });
+		}
+
+		res.status(200).json(foundIncident.recordset);
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+module.exports = { reportIncident, getAllIncidents, getIncidentById };

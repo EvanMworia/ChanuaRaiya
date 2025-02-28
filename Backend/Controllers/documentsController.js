@@ -36,4 +36,43 @@ async function addNewDocument(req, res) {
 	}
 }
 
-module.exports = { addNewDocument };
+async function getAllDocuments(req, res) {
+	try {
+		let results = await db.executeProcedure('GetAllDocuments', {});
+
+		res.status(200).json(results.recordset);
+	} catch (error) {
+		console.error('❌ Error fetching Documents:', error);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
+}
+async function getDocumentById(req, res) {
+	try {
+		const { id } = req.params;
+
+		const foundDocument = await db.executeProcedure('GetDocumentById', { DocumentId: id });
+		if (!foundDocument) {
+			res.status(404).json({ message: 'No Document was found with that id' });
+		}
+
+		res.status(200).json(foundDocument.recordset);
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+async function deleteDocument(req, res) {
+	try {
+		const { id } = req.params;
+		const foundDocument = await db.executeProcedure('GetDocumentById', { DocumentId: id });
+		if (!foundDocument) {
+			res.status(404).json({ message: 'No  Document was found with that id' });
+		}
+		await db.executeProcedure('DeleteDocument', { DocumentId: id });
+		res.status(200).json({ message: `The Document has been deleted successfully` });
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+module.exports = { addNewDocument, getAllDocuments, getDocumentById, deleteDocument };
