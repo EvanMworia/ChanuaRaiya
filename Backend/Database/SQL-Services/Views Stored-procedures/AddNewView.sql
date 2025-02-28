@@ -3,7 +3,7 @@ GO
 CREATE OR ALTER PROCEDURE AddNewView
     @ViewId VARCHAR(255),
     @Opinion VARCHAR(1600),
-    @UserId VARCHAR(255),
+    @UserId VARCHAR(255) ,
     @TopicId VARCHAR(255)
 
 AS
