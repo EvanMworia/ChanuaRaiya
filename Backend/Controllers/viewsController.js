@@ -10,7 +10,7 @@ async function shareView(req, res) {
 			return res.status(400).json({ message: `${error.message}` });
 		}
 
-		const { Opinion } = req.body;
+		const { Opinion, TopicId, UserId } = req.body;
 
 		const viewId = uid();
 		// Execute stored procedure and retrieve the new UserID

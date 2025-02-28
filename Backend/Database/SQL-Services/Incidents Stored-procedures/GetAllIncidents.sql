@@ -1,0 +1,9 @@
+USE CHANUARAIYA
+GO
+CREATE OR ALTER PROCEDURE GetIncidents
+AS
+BEGIN
+    SELECT *
+    FROM Incidents
+    ORDER BY CreatedAt DESC;
+END;
