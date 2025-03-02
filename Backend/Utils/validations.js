@@ -21,9 +21,28 @@ const createPollSchema = Joi.object({
 	Question: Joi.string().required(),
 });
 
+const addPollOptionSchema = Joi.object({
+	PollId: Joi.string().required(),
+	OptionText: Joi.string().required(),
+});
+
+const castVoteSchema = Joi.object({
+	UserId: Joi.string().required(),
+	PollId: Joi.string().required(),
+	OptionId: Joi.string().required(),
+});
+
 const shareViewSchema = Joi.object({
 	Opinion: Joi.string().required(),
 	TopicId: Joi.string().required(),
 	UserId: Joi.string().required(),
 });
-module.exports = { registerUserSchema, loginUserSchema, createTopicSchema, shareViewSchema, createPollSchema };
+module.exports = {
+	registerUserSchema,
+	loginUserSchema,
+	createTopicSchema,
+	shareViewSchema,
+	createPollSchema,
+	addPollOptionSchema,
+	castVoteSchema,
+};

@@ -1,6 +1,6 @@
 const DbHelper = require('../Database/databaseHelper');
 const { v4: uid } = require('uuid');
-const { createPollSchema } = require('../Utils/validations');
+const { createPollSchema, addPollOptionSchema, castVoteSchema } = require('../Utils/validations');
 
 // const { sendTopicCreationEmail } = require('../Services/emailService');
 const db = new DbHelper();
@@ -31,6 +31,129 @@ async function createNewPoll(req, res) {
 	} catch (error) {
 		console.error('Error happened ', error);
 		res.status(500).json({ message: 'Server Error' });
+	}
+}
+async function addPollOption(req, res) {
+	try {
+		const { error } = addPollOptionSchema.validate(req.body);
+		if (error) {
+			return res.status(400).json({ message: `${error.message}` });
+		}
+
+		const { PollId, OptionText } = req.body;
+
+		// Execute stored procedure and retrieve the new UserID
+		await db.executeProcedure('AddNewPollOption', {
+			PollId,
+			OptionText,
+		});
+
+		res.status(201).json({
+			message: `The Poll Option has been created successfully`,
+		});
+	} catch (error) {
+		console.error('Error happened ', error);
+		res.status(500).json({ message: 'Server Error' });
+	}
+}
+// async function castVote(req, res) {
+// 	try {
+// 		const { error } = castVoteSchema.validate(req.body);
+// 		if (error) {
+// 			return res.status(400).json({ message: `${error.message}` });
+// 		}
+
+// 		const voteId = uid();
+// 		const { UserId, PollId, OptionId } = req.body;
+
+// 		// Execute stored procedure and retrieve the new UserID
+// 		await db.executeProcedure('CastVote', {
+// 			VoteId: voteId,
+// 			UserId,
+// 			PollId,
+// 			OptionId,
+// 		});
+
+// 		res.status(201).json({
+// 			message: `Your vote has been recorded successfully`,
+// 		});
+// 	} catch (error) {
+// 		console.error('Error happened ', error);
+// 		res.status(500).json({ message: 'Server Error' });
+// 	}
+// }
+async function castVote(req, res) {
+	try {
+		const { error } = castVoteSchema.validate(req.body);
+		if (error) {
+			return res.status(400).json({ message: `${error.message}` });
+		}
+
+		const voteId = uid();
+		const { UserId, PollId, OptionId } = req.body;
+
+		try {
+			// Execute stored procedure
+			await db.executeProcedure('CastVote', {
+				VoteId: voteId,
+				UserId,
+				PollId,
+				OptionId,
+			});
+
+			res.status(201).json({
+				message: `Your vote has been recorded successfully`,
+			});
+		} catch (dbError) {
+			// Check if it's the "already voted" error from SQL Server
+			if (dbError.message.includes('User has already voted in this poll.')) {
+				return res.status(400).json({ message: 'You have already voted in this poll and cannot vote again.' });
+			}
+
+			// For any other database errors
+			console.error('Database error:', dbError);
+			res.status(500).json({ message: 'Server Error' });
+		}
+	} catch (error) {
+		console.error('Error happened ', error);
+		res.status(500).json({ message: 'Server Error' });
+	}
+}
+async function getPollResults(req, res) {
+	try {
+		const { PollId } = req.params;
+
+		// Execute stored procedure
+		const result = (await db.executeProcedure('GetPollResults', { PollId })).recordset;
+
+		// The first result set contains total votes
+		const totalVotes = result[0]?.TotalVotes || 0;
+
+		// The second result set contains votes per option
+		const votesPerOption = result.slice(1);
+
+		res.status(200).json({
+			PollId,
+			TotalVotes: totalVotes,
+			Results: votesPerOption,
+		});
+	} catch (error) {
+		console.error('Error fetching poll results:', error);
+		res.status(500).json({ message: 'Server Error' });
+	}
+}
+
+async function getPollOptionsOnAPoll(req, res) {
+	try {
+		const { id } = req.params;
+		let results = await db.executeProcedure('GetAllPollOptions', {
+			PollId: id,
+		});
+
+		res.status(200).json(results.recordset);
+	} catch (error) {
+		console.error('❌ Error fetching Poll options:', error);
+		res.status(500).json({ error: 'Internal Server Error' });
 	}
 }
 async function getAllPolls(req, res) {
@@ -73,4 +196,13 @@ async function deletePoll(req, res) {
 	}
 }
 
-module.exports = { createNewPoll, getAllPolls, getPollById, deletePoll };
+module.exports = {
+	createNewPoll,
+	getAllPolls,
+	getPollById,
+	getPollResults,
+	deletePoll,
+	addPollOption,
+	getPollOptionsOnAPoll,
+	castVote,
+};
