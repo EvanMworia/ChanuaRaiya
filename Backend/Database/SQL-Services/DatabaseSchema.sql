@@ -29,7 +29,7 @@ CREATE TABLE Polls (
     Question VARCHAR(255) NOT NULL,
     CreatedAt DATETIME DEFAULT GETDATE()
 );
-
+USE CHANUARAIYA
 CREATE TABLE PollOptions (
     OptionId INT PRIMARY KEY IDENTITY, --id of the poll choice ----- GIVEN BY DB
     PollId VARCHAR(255) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE UserPollVotes (
     FOREIGN KEY (PollId) REFERENCES Polls(PollId) ON DELETE CASCADE,
     FOREIGN KEY (OptionId) REFERENCES PollOptions(OptionId) 
 );
-USE CHANUARAIYA
+
 CREATE TABLE Incidents (
     IncidentId VARCHAR(255) PRIMARY KEY,
     Location VARCHAR(255) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE Incidents (
     CreatedAt DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(UserId)
 );
-USE CHANUARAIYA
+
 CREATE TABLE Documents (
     DocumentId VARCHAR(255) PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
