@@ -1,0 +1,8 @@
+USE CHANUARAIYA
+GO
+CREATE OR ALTER PROCEDURE DeleteIncident
+    @IncidentId VARCHAR(255)
+AS
+BEGIN
+    DELETE FROM Incidents WHERE IncidentId = @IncidentId;
+END;

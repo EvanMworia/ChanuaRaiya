@@ -9,6 +9,52 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const db = new DbHelper();
 
+// async function registerNewUser(req, res) {
+// 	try {
+// 		const { error } = registerUserSchema.validate(req.body);
+// 		if (error) {
+// 			return res.status(400).json({ message: `${error.message}` });
+// 		}
+
+// 		const { Username, Email, Password } = req.body;
+
+// 		// Check if the email already exists
+// 		const existingEmail = await db.executeProcedure('GetUserByEmail', { Email });
+// 		if (existingEmail.length > 0) {
+// 			return res.status(400).json({ message: 'Email is already in use' });
+// 		}
+
+// 		// Hash password
+// 		const hashedPassword = await bcrypt.hash(Password, 10);
+// 		const userId = uid();
+
+// 		try {
+// 			// Execute stored procedure to insert user
+// 			await db.executeProcedure('UpsertUser', {
+// 				UserId: userId,
+// 				Username,
+// 				Email,
+// 				PasswordHash: hashedPassword,
+// 			});
+// 		} catch (dbError) {
+// 			// Check if the error is a unique key violation
+// 			if (dbError.number === 2627) {
+// 				return res.status(400).json({ message: 'Email is already in use' });
+// 			}
+// 			throw dbError; // Let other errors be caught by the main catch block
+// 		}
+
+// 		res.status(201).json({
+// 			message: `User ${Username} has been created successfully`,
+// 		});
+
+// 		await sendWelcomeEmail(Email, Username);
+// 	} catch (error) {
+// 		console.error('Error happened:', error);
+// 		res.status(500).json({ message: 'Something went wrong when creating your account, check the email used' });
+// 	}
+// }
+
 async function registerNewUser(req, res) {
 	try {
 		const { error } = registerUserSchema.validate(req.body);
@@ -44,7 +90,7 @@ async function registerNewUser(req, res) {
 		//sendWelcomeSMS(Phone, FullName);
 	} catch (error) {
 		console.error('Error happened ', error);
-		res.status(500).json({ message: 'Server Error' });
+		res.status(500).json({ message: 'Something went wrong when creating your account, check the email used' });
 	}
 }
 async function login(req, res) {
@@ -83,6 +129,31 @@ async function getUsers(req, res) {
 	} catch (error) {
 		console.error('❌ Error fetching users:', error);
 		res.status(500).json({ error: 'Internal Server Error' });
+	}
+}
+async function updateUserRole(req, res) {
+	try {
+		const { id } = req.params;
+		const { Role } = req.body;
+
+		// Check if user exists
+		const existingUser = await db.executeProcedure('GetUserById', { UserId: id });
+		if (!existingUser.recordset.length) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		await db.executeProcedure('UpsertUser', {
+			UserId: id,
+			Username: existingUser.recordset[0].Username,
+			Email: existingUser.recordset[0].Email,
+			PasswordHash: existingUser.recordset[0].PasswordHash,
+			Role,
+		});
+
+		res.status(200).json({ message: 'User role updated successfully' });
+	} catch (error) {
+		console.error('Error updating user role:', error);
+		res.status(500).json({ message: 'Internal Server Error' });
 	}
 }
 async function deleteUser(req, res) {
@@ -131,4 +202,4 @@ async function getUserByEmail(req, res) {
 	}
 }
 
-module.exports = { registerNewUser, login, getUsers, getUserByEmail, getUserById, deleteUser };
+module.exports = { registerNewUser, login, getUsers, getUserByEmail, getUserById, deleteUser, updateUserRole };
