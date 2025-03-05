@@ -62,4 +62,18 @@ async function getIncidentById(req, res) {
 		res.status(500).json({ message: 'Internal server Error' });
 	}
 }
-module.exports = { reportIncident, getAllIncidents, getIncidentById };
+async function deleteIncident(req, res) {
+	try {
+		const { id } = req.params;
+		const foundIncident = await db.executeProcedure('GetIncidentById', { IncidentId: id });
+		if (!foundIncident) {
+			res.status(404).json({ message: 'No Discussion topic was found with that id' });
+		}
+		await db.executeProcedure('DeleteIncident', { IncidentId: id });
+		res.status(200).json({ message: ` Incident has been deleted successfully` });
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
+module.exports = { reportIncident, getAllIncidents, getIncidentById, deleteIncident };

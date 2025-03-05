@@ -55,6 +55,21 @@ async function getViewById(req, res) {
 		res.status(500).json({ message: 'Internal server Error' });
 	}
 }
+async function getViewsOnATopic(req, res) {
+	try {
+		const { id } = req.params;
+
+		const foundViews = (await db.executeProcedure('GetViewsFromATopic', { TopicId: id })).recordset;
+		if (foundViews.length == 0) {
+			return res.status(404).json({ message: 'No Topic was found with that id' });
+		}
+
+		return res.status(200).json(foundViews);
+	} catch (error) {
+		console.error('Something went wwrong', error);
+		res.status(500).json({ message: 'Internal server Error' });
+	}
+}
 async function deleteView(req, res) {
 	try {
 		const { id } = req.params;
@@ -70,4 +85,4 @@ async function deleteView(req, res) {
 	}
 }
 
-module.exports = { shareView, getAllViews, getViewById, deleteView };
+module.exports = { shareView, getAllViews, getViewById, deleteView, getViewsOnATopic };

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>User Dashboard</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script defer src="./sikika.js"></script>
+		<script defer src="../session.js"></script>
+	</head>
+	<body class="flex bg-gray-100 h-screen">
+		<!-- Sidebar -->
+		<aside class="w-64 bg-[#1A1A1A] text-white h-full flex flex-col">
+			<!-- Profile Section -->
+			<div class="p-4 bg-gray-700 flex flex-col items-center text-center">
+				<h3 id="user-role" class="text-lg font-semibold"></h3>
+				<p id="user-email" class="text-sm text-gray-300"></p>
+			</div>
+
+			<!-- Nav Links -->
+			<nav class="flex-1 p-4">
+				<h2 class="text-[#006B1A] text-xl font-bold mb-4">Chanua<span class="text-[#A70808]">Raiya</span></h2>
+				<ul>
+					<li>
+						<a href="../dashboard component/dashboard.html">
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📊 Dashboard
+							</button>
+						</a>
+					</li>
+					<a href="../incidents component/incidents.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📁 Incidents
+							</button>
+						</li>
+					</a>
+					<a href="../report incidents component/report incidents.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								✏️ Report Incident
+							</button>
+						</li>
+					</a>
+					<a href="../sikika component/sikika.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📢 Sikika
+							</button>
+						</li>
+					</a>
+					<a href="../active polls component/active polls.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								🏷 Active Polls
+							</button>
+						</li>
+					</a>
+					<a href="../documents component/documents.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📄 Documents
+							</button>
+						</li>
+					</a>
+				</ul>
+			</nav>
+
+			<!-- Bottom Links -->
+			<div class="p-4">
+				<a href="../chatbot component/chatbot.html">
+					<button class="nav-link flex items-center p-2 w-full text-left text-[#006B1A] hover:bg-gray-700">
+						🗣 Bonga na Kimenyi
+					</button>
+				</a>
+				<button
+					id="logout-btn"
+					class="nav-link flex items-center p-2 w-full text-left text-[#A70808] hover:bg-gray-700"
+				>
+					⏻ Logout
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Content Area -->
+		<main class="flex-1 p-6 bg-white" id="content">
+			<div class="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-md">
+				<h2 class="text-2xl font-bold mb-4">Topics</h2>
+				<ul id="topicsList" class="space-y-4"></ul>
+			</div>
+
+			<!-- Modal for Viewing Opinions -->
+			<div
+				id="viewsModal"
+				class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
+			>
+				<div class="bg-white p-6 rounded-md shadow-lg w-96">
+					<h3 class="text-lg font-bold mb-4">User Opinions</h3>
+					<ul id="viewsList" class="space-y-2"></ul>
+					<button id="closeModal" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+						Close
+					</button>
+				</div>
+			</div>
+
+			<!-- Modal for Adding a View -->
+			<div
+				id="addViewModal"
+				class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
+			>
+				<div class="bg-white p-6 rounded-md shadow-lg w-96">
+					<h3 class="text-lg font-bold mb-4">Add Your Opinion</h3>
+					<form id="viewForm" class="flex flex-col space-y-3">
+						<textarea
+							id="opinionText"
+							rows="3"
+							class="w-full p-2 border rounded-md focus:ring-2 focus:ring-green-500"
+							placeholder="Write your opinion..."
+						></textarea>
+						<button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+							Submit
+						</button>
+					</form>
+					<button
+						id="closeViewModal"
+						class="mt-4 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+					>
+						Cancel
+					</button>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>

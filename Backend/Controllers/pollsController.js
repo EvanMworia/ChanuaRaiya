@@ -124,13 +124,9 @@ async function getPollResults(req, res) {
 		const { PollId } = req.params;
 
 		// Execute stored procedure
-		const result = (await db.executeProcedure('GetPollResults', { PollId })).recordset;
-
-		// The first result set contains total votes
-		const totalVotes = result[0]?.TotalVotes || 0;
-
-		// The second result set contains votes per option
-		const votesPerOption = result.slice(1);
+		const result = await db.executeProcedure('GetPollResults', { PollId });
+		const votesPerOption = result.recordsets[0]; // First result set (options & votes)
+		const totalVotes = result.recordsets[1][0]?.TotalVotes || 0; // Second result set (TotalVotes)
 
 		res.status(200).json({
 			PollId,
@@ -139,6 +135,40 @@ async function getPollResults(req, res) {
 		});
 	} catch (error) {
 		console.error('Error fetching poll results:', error);
+		res.status(500).json({ message: 'Server Error' });
+	}
+}
+
+async function getPollWithOptions(req, res) {
+	try {
+		const { PollId } = req.params;
+
+		// Fetch poll question
+		const pollResult = await db.executeProcedure('GetPollById', { PollId });
+
+		// Fetch poll options
+		const optionsResult = await db.executeProcedure('GetAllPollOptions', { PollId });
+
+		// Check if poll exists
+		if (!pollResult.recordset.length) {
+			return res.status(404).json({ message: 'Poll not found' });
+		}
+
+		// Format the response
+		const poll = pollResult.recordset[0]; // Assuming there's only one poll
+		const options = optionsResult.recordset;
+
+		res.status(200).json({
+			PollId: poll.PollId,
+			Question: poll.Question,
+			CreatedAt: poll.CreatedAt,
+			Options: options.map((option) => ({
+				OptionId: option.OptionId,
+				OptionText: option.OptionText,
+			})),
+		});
+	} catch (error) {
+		console.error('Error fetching poll with options:', error);
 		res.status(500).json({ message: 'Server Error' });
 	}
 }
@@ -205,4 +235,5 @@ module.exports = {
 	addPollOption,
 	getPollOptionsOnAPoll,
 	castVote,
+	getPollWithOptions,
 };

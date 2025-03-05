@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Page - Sikika</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script defer src="./sikika.js"></script>
+		<script defer src="../session.js"></script>
+	</head>
+	<body class="flex bg-gray-100">
+		<!-- Sidebar -->
+		<aside class="w-64 bg-black text-white min-h-screen flex flex-col">
+			<!-- Profile -->
+			<div class="flex items-center gap-3 p-4 border-b border-gray-600">
+				<div>
+					<h3 id="user-role" class="text-sm font-semibold">Mgenge 2true</h3>
+					<p id="user-email" class="text-xs text-gray-400">mgenge2true@gmail.com</p>
+				</div>
+			</div>
+
+			<!-- Navigation Links -->
+			<nav class="flex-1 mt-4">
+				<a
+					href="../admin dashboard component/admin dashboard.html"
+					class="flex items-center gap-2 p-3 hover:bg-gray-800"
+				>
+					<span>📊</span> Dashboard
+				</a>
+				<a
+					href="../create poll component/create poll.html"
+					class="flex items-center gap-2 p-3 hover:bg-gray-800"
+				>
+					<span>📝</span> Create Poll
+				</a>
+				<a href="./sikika.html" class="flex items-center gap-2 p-3 hover:bg-gray-800">
+					<span>💬</span> Sikika
+				</a>
+				<a
+					href="../reported incidents component/reported incidents.html"
+					class="flex items-center gap-2 p-3 hover:bg-gray-800"
+				>
+					<span>⚠️</span> Reported Incidents
+				</a>
+				<a
+					href="../admin active polls component/active polls.html"
+					class="flex items-center gap-2 p-3 hover:bg-gray-800"
+				>
+					<span>📌</span> Active Polls
+				</a>
+				<a href="../documents component/documents.html" class="flex items-center gap-2 p-3 hover:bg-gray-800">
+					<span>📄</span> Documents
+				</a>
+			</nav>
+
+			<!-- Logout -->
+			<div class="p-4">
+				<button
+					id="logout-btn"
+					class="nav-link flex items-center p-2 w-full text-left text-[#A70808] hover:bg-gray-700"
+				>
+					⏻ Logout
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 p-8">
+			<h1>Admin Sikika</h1>
+		</main>
+	</body>
+</html>

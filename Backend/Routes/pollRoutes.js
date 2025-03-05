@@ -8,6 +8,7 @@ const {
 	getPollOptionsOnAPoll,
 	castVote,
 	getPollResults,
+	getPollWithOptions,
 } = require('../Controllers/pollsController');
 const pollsRouter = express.Router();
 
@@ -18,6 +19,8 @@ pollsRouter.get('/results/:PollId', getPollResults);
 pollsRouter.get('/all-polls', getAllPolls);
 pollsRouter.get('/all-poll-options/:id', getPollOptionsOnAPoll);
 pollsRouter.get('/poll/:id', getPollById);
+pollsRouter.get('/:PollId', getPollWithOptions);
+
 pollsRouter.delete('/poll/:id', deletePoll);
 
 module.exports = pollsRouter;
