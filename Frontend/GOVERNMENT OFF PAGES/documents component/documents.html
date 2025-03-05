@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>User Dashboard</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script defer src="./documents.js"></script>
+		<script defer src="../session.js"></script>
+	</head>
+	<body class="flex bg-gray-100 h-screen">
+		<!-- Sidebar -->
+		<aside class="w-64 bg-[#1A1A1A] text-white h-full flex flex-col">
+			<!-- Profile Section -->
+			<div class="p-4 bg-gray-700 flex flex-col items-center text-center">
+				<h3 id="user-role" class="text-lg font-semibold"></h3>
+				<p id="user-email" class="text-sm text-gray-300"></p>
+			</div>
+
+			<!-- Nav Links -->
+			<nav class="flex-1 p-4">
+				<h2 class="text-[#006B1A] text-xl font-bold mb-4">Chanua<span class="text-[#A70808]">Raiya</span></h2>
+				<ul>
+					<li>
+						<a href="../dashboard component/dashboard.html">
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📊 Dashboard
+							</button>
+						</a>
+					</li>
+					<a href="../incidents component/incidents.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📁 Incidents
+							</button>
+						</li>
+					</a>
+
+					<a href="../sikika component/sikika.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📢 Sikika
+							</button>
+						</li>
+					</a>
+					<a href="../active polls component/active polls.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								🏷 Active Polls
+							</button>
+						</li>
+					</a>
+					<a href="../documents component/documents.html">
+						<li>
+							<button class="nav-link flex items-center p-2 w-full text-left hover:bg-gray-700">
+								📄 Documents
+							</button>
+						</li>
+					</a>
+				</ul>
+			</nav>
+
+			<!-- Bottom Links -->
+			<div class="p-4">
+				<button
+					id="logout-btn"
+					class="nav-link flex items-center p-2 w-full text-left text-[#A70808] hover:bg-gray-700"
+				>
+					⏻ Logout
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Content Area -->
+		<main class="flex-1 p-6 bg-white" id="content">
+			<h1 class="text-2xl font-bold">Welcome to the documents</h1>
+			<div id="documents-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"></div>
+		</main>
+	</body>
+</html>
