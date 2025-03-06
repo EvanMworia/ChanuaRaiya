@@ -51,16 +51,41 @@ function addTopicToList(topicId, title, context) {
 			
             <div class="space-x-2">
                 <button class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 view-opinions" data-id="${topicId}">View Opinions</button>
-                <button class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700" data-id="${topicId}">Summarize using AI</button>
+                <button class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 summarize-opinions" data-id="${topicId}">Summarize Opinions</button>
             </div>
         </div>
 		<div>${context}</div>
     `;
 	topicsList.appendChild(li);
 
+	// Event Listeners
 	li.querySelector('.view-opinions').addEventListener('click', () => openViewsModal(topicId));
-	li.querySelector('.add-opinion').addEventListener('click', () => openAddViewModal(topicId));
+	li.querySelector('.summarize-opinions').addEventListener('click', () => summarizeOpinions(topicId));
 }
+
+const summaryModal = document.getElementById('summaryModal');
+const summaryText = document.getElementById('summaryText');
+const closeSummaryModal = document.getElementById('closeSummaryModal');
+
+// Function to fetch and summarize opinions using OpenAI
+async function summarizeOpinions(topicId) {
+	try {
+		// Fetch the summarized opinions from the backend
+		const response = await fetch(`http://localhost:5000/api/summarize/summarize-opinions/${topicId}`);
+		const data = await response.json();
+
+		// Display the summary in the modal
+		summaryText.textContent = data.summary;
+		summaryModal.classList.remove('hidden');
+	} catch (error) {
+		console.error('Error fetching summary:', error);
+		summaryText.textContent = 'An error occurred while summarizing opinions.';
+		summaryModal.classList.remove('hidden');
+	}
+}
+
+// Close Summary Modal
+closeSummaryModal.addEventListener('click', () => summaryModal.classList.add('hidden'));
 
 // 🔹 Fetch & Display Opinions for a Topic
 async function openViewsModal(topicId) {

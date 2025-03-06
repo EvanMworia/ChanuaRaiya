@@ -83,9 +83,22 @@
 		</aside>
 
 		<!-- Main Content Area -->
-		<main class="flex-1 p-6 bg-white" id="content">
-			<h1 class="text-2xl font-bold">Welcome to the chat bot</h1>
-			<!-- <p class="mt-2 text-gray-600">This is the dashboard</p> -->
+		<main class="flex-1 p-6 bg-white flex flex-col justify-between h-full" id="content">
+			<!-- Chat Messages -->
+			<div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+				<!-- Bot's Initial Message -->
+				<div class="bot-message bg-gray-200 p-3 rounded-lg w-fit">
+					📄 Upload the downloaded document and I will summarize it for you.
+				</div>
+			</div>
+
+			<!-- File Upload Section -->
+			<div class="p-4 bg-gray-100 flex items-center space-x-2">
+				<input type="file" id="fileInput" class="border rounded p-2 flex-1" accept=".pdf,.doc,.docx" />
+				<button id="sendButton" class="bg-[#006B1A] text-white px-4 py-2 rounded hover:bg-green-700">
+					Send
+				</button>
+			</div>
 		</main>
 	</body>
 </html>
