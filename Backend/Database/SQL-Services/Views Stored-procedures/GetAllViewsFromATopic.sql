@@ -5,3 +5,5 @@ AS
 BEGIN
     SELECT Opinion FROM Views WHERE TopicId=@TopicId
 END
+
+EXEC GetViewsFromATopic '272e2eab-23b1-4c3c-8f6d-134bc9f3368e'
